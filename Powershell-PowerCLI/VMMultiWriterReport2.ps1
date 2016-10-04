@@ -10,7 +10,7 @@
 
 .NOTES  Author:  Vikas Shitole
 .NOTES  Site:    www.vThinkBeyondVM.com
-.NOTES  Reference: http://vthinkbeyondvm.com/category/powercli/
+.NOTES  Reference: http://vthinkbeyondvm.com/category/powercli/ and https://communities.vmware.com/message/2269363#2269363
 .NOTES Please add the vCenter server IP/credetails as per your environment
 .NOTES Alternatively you can use this script where API properties are used. https://github.com/vThinkBeyondVM/vThinkBVM-scripts/blob/master/Powershell-PowerCLI/VMMultiWriterReport.ps1
 #>
