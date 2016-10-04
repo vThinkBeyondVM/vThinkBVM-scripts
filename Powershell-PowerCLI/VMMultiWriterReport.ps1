@@ -9,6 +9,9 @@
 .NOTES  Site:    www.vThinkBeyondVM.com
 .NOTES  Reference: http://vthinkbeyondvm.com/category/powercli/
 .NOTES Please add the vCenter server IP/credetails as per your environment
+
+Alternate solution by scanning VMX file is here: https://github.com/vThinkBeyondVM/vThinkBVM-scripts/blob/master/Powershell-PowerCLI/VMMultiWriterReport2.ps1
+
 #>
 
 Write-host "Connecting to vCenter server.."
