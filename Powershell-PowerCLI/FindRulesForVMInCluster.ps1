@@ -7,7 +7,7 @@
 
 #>
 
-Connect-VIServer -Server 10.160.166.82 -User Administrator@vsphere.local -Password Admin!23
+Connect-VIServer -Server 10.192.x.y -User Administrator@vsphere.local -Password xyz!23
 
 $clusterName = "BLR" #Your cluster name
 $cluster = Get-Cluster -Name $clusterName
