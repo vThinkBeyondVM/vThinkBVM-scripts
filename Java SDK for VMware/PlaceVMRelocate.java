@@ -19,6 +19,7 @@ import com.vmware.vim25.PlacementSpec;
 import com.vmware.vim25.VirtualMachineMovePriority;
 import com.vmware.vim25.VirtualMachineRelocateSpec;
 import com.vmware.vim25.mo.ClusterComputeResource;
+import com.vmware.vim25.StoragePlacementSpecPlacementType;
 import com.vmware.vim25.mo.Datacenter;
 import com.vmware.vim25.mo.Datastore;
 import com.vmware.vim25.mo.Folder;
