@@ -5,7 +5,7 @@
 //::# How to run this sample: http://vthinkbeyondvm.com/getting-started-with-yavi-java-opensource-java-sdk-for-vmware-vsphere-step-by-step-guide-for-beginners/
 
 
-package com.vmware.vim25.mo.samples.storage;
+package com.vmware.yavijava;
 
 import java.net.MalformedURLException;
 import java.net.URL;
