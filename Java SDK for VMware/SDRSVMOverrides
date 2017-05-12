@@ -1,0 +1,97 @@
+//:: # Product/Feature: vCenter Server/SDRS
+//:: # Author: Vikas Shitole
+//:: # Reference: https://pubs.vmware.com/vsphere-65/index.jsp#com.vmware.wssdk.apiref.doc/vim.StorageResourceManager.html#configureStorageDrsForPod
+//:: # Description: Re-enable SDRS on VMs where SDRS was disabled when particular datastore was selected for VMDK/VM placement
+//::# How to run this sample: http://vthinkbeyondvm.com/getting-started-with-yavi-java-opensource-java-sdk-for-vmware-vsphere-step-by-step-guide-for-beginners/
+
+package com.vmware.vim25.mo.samples.storage;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import com.vmware.vim25.ArrayUpdateOperation;
+import com.vmware.vim25.ManagedObjectReference;
+import com.vmware.vim25.StorageDrsConfigSpec;
+import com.vmware.vim25.StorageDrsVmConfigInfo;
+import com.vmware.vim25.StorageDrsVmConfigSpec;
+import com.vmware.vim25.mo.Folder;
+import com.vmware.vim25.mo.InventoryNavigator;
+import com.vmware.vim25.mo.ServiceInstance;
+import com.vmware.vim25.mo.StoragePod;
+import com.vmware.vim25.mo.StorageResourceManager;
+
+
+public class SDRSVMOverrides {
+
+	public static void main(String[] args) throws Exception {
+		if(args.length!=3)
+		{
+			System.out.println("Usage: SDRSVMOverrides url username password");
+			System.exit(-1);
+		}
+
+		URL url = null;
+		try 
+		{ 
+			url = new URL(args[0]); //https://192.1.1.1/sdk
+		} catch ( MalformedURLException urlE)
+		{
+			System.out.println("The URL provided is NOT valid. Please check it.");
+			System.exit(-1);
+		}
+		String username = args[1]; //vCenter username
+		String password = args[2]; //vCenter password
+
+		ServiceInstance si = new ServiceInstance(url, username,
+				password, true);
+		Folder rootFolder = si.getRootFolder();
+
+		StoragePod pod = (StoragePod) new InventoryNavigator(rootFolder).searchManagedEntity("StoragePod", "SDRSPOD");
+		
+		//If you want all SDRS PODs in a vCenter server
+		//StoragePod[] pods = (StoragePod[]) new InventoryNavigator(rootFolder).searchManagedEntities("StoragePod");
+
+
+		if (pod == null) {
+			System.out.println("SDRS POD not found on vCenter");
+			si.getServerConnection().logout();
+			return;
+		}
+
+		StorageDrsVmConfigInfo[] vmOverrides=pod.getPodStorageDrsEntry().getStorageDrsConfig().getVmConfig();
+
+
+		if (vmOverrides == null) {
+			System.out.println("There is NO any VM which overrides SDRS cluster level configuration ");
+			si.getServerConnection().logout();
+			return;
+		}
+
+		ManagedObjectReference StorageResourceMOR=si.getServiceContent().getStorageResourceManager();
+		StorageResourceManager resourceManager = new StorageResourceManager(si.getServerConnection(), StorageResourceMOR);
+
+  //Note: We are only enabling SDRS on VMs where it was disabled. We are not re-configuring anything on automation level/rules etc.
+  
+		for(StorageDrsVmConfigInfo vmOverride: vmOverrides){
+			boolean en=vmOverride.getEnabled();
+			if(vmOverride.getEnabled()==false)
+			{
+				StorageDrsConfigSpec Spec=new StorageDrsConfigSpec();
+				StorageDrsVmConfigSpec[] vmConfigSpec=new StorageDrsVmConfigSpec[1];
+				vmConfigSpec[0]=new StorageDrsVmConfigSpec();
+				vmConfigSpec[0].setOperation(ArrayUpdateOperation.add);
+				StorageDrsVmConfigInfo vmConfigInfo=new StorageDrsVmConfigInfo();
+				vmConfigInfo.setEnabled(true);
+				vmConfigInfo.setVm(vmOverride.getVm());
+				vmConfigSpec[0].setInfo(vmConfigInfo);
+				Spec.setVmConfigSpec(vmConfigSpec);
+				resourceManager.configureStorageDrsForPod_Task(pod, Spec, true);
+				System.out.println("SDRS is enabled on "+vmOverride.getVm().toString()+" VM");
+			}else{
+				System.out.println("SDRS was already enabled on this VM "+vmOverride.getVm().toString());
+			}
+		}
+		 si.getServerConnection().logout();
+
+	}
+
+}
