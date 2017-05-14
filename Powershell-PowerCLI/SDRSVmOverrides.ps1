@@ -10,7 +10,7 @@
 	Write-host "Connecting to vCenter server.."
 
 	Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false -DisplayDeprecationWarnings:$false -Scope User
-	Connect-VIServer -Server 10.161.8.171  -User administrator@vsphere.local -Password Admin!23
+	Connect-VIServer -Server 10.192.1.2  -User administrator@vsphere.local -Password Admin!23
 
 	$pod=Get-View -ViewType 'StoragePod'
 	$pod_Mor=$pod.MoRef;
