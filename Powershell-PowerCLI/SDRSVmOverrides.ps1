@@ -12,7 +12,7 @@
 	Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false -DisplayDeprecationWarnings:$false -Scope User
 	Connect-VIServer -Server 10.192.1.2  -User administrator@vsphere.local -Password Admin!23
 
-	$pod=Get-View -ViewType 'StoragePod'
+	$pod=Get-View -ViewType 'StoragePod' -filter @{"Name”=”DatastoreCluster”}
 	$pod_Mor=$pod.MoRef;
 	$report = @()
 	if($pod -eq $null){
