@@ -12,7 +12,7 @@ import ssl
 
 s=ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 s.verify_mode=ssl.CERT_NONE
-c= SmartConnect(host="10.161.93.214", user="Administrator@vsphere.local", pwd="Admin!23",sslContext=s)
+c= SmartConnect(host="10.161.2.3", user="Administrator@vsphere.local", pwd="VMware1!",sslContext=s)
 content=c.content
 
 #Below method gets all objects those are matching with provided "vimtype"
