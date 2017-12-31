@@ -5,7 +5,7 @@ import ssl
 
 s=ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 s.verify_mode=ssl.CERT_NONE
-si= SmartConnect(host="10.161.177.234", user="Administrator@vsphere.local", pwd="Admin!23",sslContext=s)
+si= SmartConnect(host="10.161.34.35", user="Administrator@vsphere.local", pwd="VMware#12",sslContext=s)
 content=si.content
 
 #Parameters required are hardcoded below, please do change as per your environment.
@@ -19,7 +19,7 @@ witness_vcha_ip="192.168.0.3"   # Witness node vCenter HA IP
 active_vcha_vm_name="vThinkBVM-VC1" #Active node/VC VM name
 active_vc_username="Administrator@vsphere.local"  #Active VC username
 active_vc_password="VMware#23"  #Active VC password
-active_vc_url="https://10.61.177.234"  #Active VC public IP
+active_vc_url="https://10.61.34.35"  #Active VC public IP
 active_vc_thumbprint="55:A9:C5:7E:0C:CD:46:26:D3:5C:C2:92:B7:0F:A7:91:E5:CD:0D:5D" #Active VC thumbprint
 passive_vc_datastore="SharedVMFS-1"  #Passive node datastore
 witness_vc_datastore="SharedVMFS-2"  #Witness node datastore
