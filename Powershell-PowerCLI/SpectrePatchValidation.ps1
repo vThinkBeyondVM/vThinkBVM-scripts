@@ -1,4 +1,11 @@
 
+<#
+.SYNOPSIS PowerCLI script:For spectre vulnerability : "How to confirm whether vCenter server, ESXi hypervisor & CPU microcode patches are applied or not?" 
+.NOTES  Author:  Vikas Shitole
+.NOTES  Site:    www.vThinkBeyondVM.com
+.NOTES Please add the vCenter server IP/credetails as per your environment
+#>
+
 #vCenter Connection, please modify as per your env.
 
 Connect-VIServer -Server 10.160.75.188 -Protocol https -User administrator@vsphere.local -Password Admin!23
