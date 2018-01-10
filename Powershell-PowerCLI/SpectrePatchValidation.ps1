@@ -4,6 +4,10 @@
 .NOTES  Author:  Vikas Shitole
 .NOTES  Site:    www.vThinkBeyondVM.com
 .NOTES Please add the vCenter server IP/credetails as per your environment
+.NOTES Relese notes: 
+  VC 6.5 U1e: https://docs.vmware.com/en/VMware-vSphere/6.5/rn/vsphere-vcenter-server-65u1e-release-notes.html
+  VC 6.0 U3d: https://docs.vmware.com/en/VMware-vSphere/6.0/rn/vsphere-vcenter-server-60u3d-release-notes.html
+  VC 5.5 U3g: https://docs.vmware.com/en/VMware-vSphere/5.5/rn/vsphere-vcenter-server-55u3g-release-notes.html
 #>
 
 #vCenter Connection, please modify as per your env.
