@@ -3,6 +3,7 @@
 .SYNOPSIS PowerCLI script:For spectre vulnerability : "How to confirm whether vCenter server, ESXi hypervisor & CPU microcode patches are applied or not?" 
 .NOTES  Author:  Vikas Shitole
 .NOTES  Site:    www.vThinkBeyondVM.com
+.NOTES Reference: http://vthinkbeyondvm.com/powercli-script-confirm-esxi-host-patched-vmware-hypervisor-patched-microcode-spectre-vulnerability/
 .NOTES Please add the vCenter server IP/credetails as per your environment
 .NOTES Relese notes: 
   VC 6.5 U1e: https://docs.vmware.com/en/VMware-vSphere/6.5/rn/vsphere-vcenter-server-65u1e-release-notes.html
@@ -111,7 +112,7 @@ $cluster= Get-Cluster -Name $clusterName
 $esxhosts = Get-Cluster $cluster | Get-VMHost -State Connected
 
 #Counter used to give unique name to dummyvm, you can use any number of your choice.
-$i=55
+$i=0
 
 #Iterating through each host for VM creation and scanning vmware.log file
 Foreach ($ESXHost in ($esxhosts)){
