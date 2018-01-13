@@ -41,9 +41,9 @@ if (($ESXHost.MaxEVCMode -eq "intel-haswell") -or ($ESXHost.MaxEVCMode -eq "inte
  Invoke-SSHCommand -Command "cp /etc/vmware/config /etc/vmware/config_backup_$FileDate" -SessionId $SSHSession.SessionId | Out-Null
  Invoke-SSHCommand -Command "sed -i '$ a $workaround' /etc/vmware/config" -SessionId $SSHSession.SessionId | Out-Null
  
- Write-Host $ESXHost.Name "is" $ESXHost.MaxEVCMode ",hence workaround applied, checkout" 
+ Write-Host $ESXHost.Name "is" $ESXHost.MaxEVCMode ",hence edited the file, checkout" 
  if($startSSH){
-     Write-Host "Since SSH was disabled on" $ESXHost.Name " even before applying workaround, hence 
+     Write-Host "Since SSH was disabled on" $ESXHost.Name " even before file edit, hence 
   disabling it back"
   $ESXHost | Get-VMHostService | Where { $_.Key -match "TSM-SSH"} |  Stop-VMHostService -Confirm:$false | Out-Null
   if($ESXHost | Get-VMHostService | Where { $_.Key -match "TSM-SSH" -and $_.Running -ne "true"}){
