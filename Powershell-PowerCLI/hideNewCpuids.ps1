@@ -4,7 +4,7 @@
 .NOTES  Site:    www.vThinkBeyondVM.com
 .NOTES Reference:  KB https://kb.vmware.com/s/article/52345 & http://vthinkbeyondvm.com/category/powercli/
 .NOTES Please add the vCenter server IP/credetails as per your environment
-
+#>
 #vCenter Connection, please modify as per your env.
 
 Connect-VIServer -Server 10.192.10.20 -Protocol https -User administrator@vsphere.local -Password VMware#123
