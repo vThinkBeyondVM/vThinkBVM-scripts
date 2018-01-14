@@ -35,7 +35,7 @@ if (($ESXHost.MaxEVCMode -eq "intel-haswell") -or ($ESXHost.MaxEVCMode -eq "inte
        $ESXHost | Get-VMHostService | Where { $_.Key -match "TSM-SSH"} | Start-VMHostService Confirm:$false | Out-Null
        $startSSH = $true
     }
-#Create a SSH Session using Posh-SSH module ($esxhosts.name or $Host.Name)
+#Create a SSH Session using Posh-SSH module
  $SSHSession = New-SSHSession -ComputerName $ESXHost.Name -Credential $Creds -Verbose -Force
  Write-Host "Backing up config file for $Host.Name" -ForegroundColor DarkCyan
  Invoke-SSHCommand -Command "cp /etc/vmware/config /etc/vmware/config_backup_$FileDate" -SessionId $SSHSession.SessionId | Out-Null
