@@ -103,7 +103,7 @@ $vmname="MyVM"
 # Any of below lines must be found in vmware.log file to confirm microcode & VMware hypervisor patch
 $pat1='Capability Found: cpuid.IBRS'
 $pat2='Capability Found: cpuid.IBPB'
-$pat3='Capabliity Found: cpuid.STIBP'
+$pat3='Capability Found: cpuid.STIBP'
 
 $clusterName="EVCCluster" #Your cluster name, script assumes that cluster is available
 $cluster= Get-Cluster -Name $clusterName
