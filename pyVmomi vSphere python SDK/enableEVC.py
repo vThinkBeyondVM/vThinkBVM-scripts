@@ -31,8 +31,7 @@ def get_obj(content, vimtype, name):
                                 obj = c
                                 break
                         else:
-                                obj = c
-                                break
+                                obj = None                                
         return obj
 
 #Cluster object
