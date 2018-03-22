@@ -59,15 +59,14 @@ def get_args():
 
 # Below method helps us to get MOR of the object (vim type) that we passed.
 def get_obj(content, vimtype, name):
-        obj = None
-        container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
-        for c in container.view:
-                if name:
-                        if c.name == name:
-                                obj = c
-                                break
-	container.Destroy()
-	return obj
+ obj = None
+ container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
+ for c in container.view:
+  if name and c.name == name:
+   obj = c
+   break
+ container.Destroy()
+ return obj
 
 
 args = get_args()
@@ -80,8 +79,8 @@ cluster_name=args.cluster
 #Cluster object
 cluster = get_obj(content,[vim.ClusterComputeResource],cluster_name)
 if(not cluster):
-	print ("Cluster not found, please enter correct EVC cluster name")
-	quit()
+ print ("Cluster not found, please enter correct EVC cluster name")
+ quit()
 
 print ("Cluster Name:"+cluster.name)
 evc_cluster_manager=cluster.EvcManager()
@@ -91,27 +90,28 @@ evc_state=evc_cluster_manager.evcState
 current_evcmode_key= evc_state.currentEVCModeKey
 
 if(current_evcmode_key):
-	print ("Current EVC Mode::"+current_evcmode_key)
+ print ("Current EVC Mode::"+current_evcmode_key)
 else:
-	print ("EVC is NOT enabled on the cluster, please enable it first")
-	quit()
+ print ("EVC is NOT enabled on the cluster, please enable it first")
+ quit()
 
 feature_capabilities = evc_state.featureCapability
 
 flag=False
 for capability in feature_capabilities:
 
-	
-	if(capability.key in ["cpuid.STIBP", "cpuid.IBPB","cpuid.IBRS"] and capability.value=="1"):
-		print ("Found::"+capability.key)
-		flag=True
+
+    if(capability.key in ["cpuid.STIBP", "cpuid.IBPB","cpuid.IBRS"] and capability.value=="1"):
+        print ("Found::"+capability.key)
+        flag=True
 
 if(not flag):
-	print ("No new cpubit found on EVC cluster,hence cluster is NOT fully patched/upgraded")
+    print ("No new cpubit found on EVC cluster,hence cluster is NOT fully patched/upgraded")
 else:
-	print ("EVC cluster is patched, enjoy!, this also confirms all the hosts inside this EVC cluster are patched as well")
+    print ("EVC cluster is patched, enjoy!, this also confirms all the hosts inside this EVC cluster are patched as well")
 
 
 atexit.register(Disconnect, si)
+
 
 
