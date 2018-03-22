@@ -12,6 +12,8 @@ import sys
 import argparse
 import getpass
 
+# Script to confirm whether EVC cluster is patched or not for Spectre vulenerability.
+
 def get_args():
     """ Get arguments from CLI """
     parser = argparse.ArgumentParser(
@@ -42,22 +44,17 @@ def get_args():
                         required=True,
                         action='store',
                         default=None,
-                        help='Name of the cluster you wish to check')
+                        help='Name of the cluster you wish to check')	
 
     args = parser.parse_args()
-if not args.password:
+
+    if not args.password:
         args.password = getpass.getpass(
             prompt='Enter vCenter password:')
 
     return args
 
-args = get_args()
-#Script to get Max EVC Mode supported on all the hosts in the cluster
-s=ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-s.verify_mode=ssl.CERT_NONE
-si= SmartConnect(host=args.host, user=args.user, pwd=args.password,sslContext=s)
-content=si.content
-cluster_name=args.cluster
+
 
 # Below method helps us to get MOR of the object (vim type) that we passed.
 def get_obj(content, vimtype, name):
@@ -68,45 +65,46 @@ def get_obj(content, vimtype, name):
                         if c.name == name:
                                 obj = c
                                 break
-                        else:
-                                obj = None
+	container.Destroy()
+	return obj
 
-        return obj
+
+args = get_args()
+s=ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+s.verify_mode=ssl.CERT_NONE
+si= SmartConnect(host=args.host, user=args.user, pwd=args.password,sslContext=s)
+content=si.content
+cluster_name=args.cluster
 
 #Cluster object
 cluster = get_obj(content,[vim.ClusterComputeResource],cluster_name)
 if(not cluster):
-        print "Cluster not found, please enter correct EVC cluster name"
-        quit()
+	print ("Cluster not found, please enter correct EVC cluster name")
+	quit()
 
-print "Cluster Name:"+cluster.name
+print ("Cluster Name:"+cluster.name)
 
 # Get all the hosts available inside cluster
 hosts = cluster.host
 
-#Iterate through each host
+#Iterate through each host to get MaxEVC mode supported on the host
 for host in hosts:
-        print "----------------------------------"
-        print "Host:"+host.name
+	print ("----------------------------------")
+	print ("Host:"+host.name)
         feature_capabilities = host.config.featureCapability
-        flag=False
-        for capability in feature_capabilities:
+	flag=False
+	for capability in feature_capabilities:
 
-                if(capability.key=="cpuid.STIBP" and capability.value=="1"):
-                        print "Found ::"+ capability.key
-                        flag=True
-
-                if(capability.key=="cpuid.IBPB" and capability.value=="1"):
-                        print "Found ::"+ capability.key
-                        flag=True
-
-                if(capability.key=="cpuid.IBRS" and capability.value=="1"):
-                        print "Found ::"+ capability.key
-                        flag=True
-        if(not flag):
-                print "No new  cpubit found, hence "+host.name+" is NOT patched"
-        else:
-                print "New CPU bit is found, hence "+host.name+" is patched"
-
+                if(capability.key in ["cpuid.STIBP", "cpuid.IBPB","cpuid.IBRS"] and capability.value=="1"):
+			print ("Found::"+capability.key)
+			flag=True
+	if(not flag):
+                print ("No new  cpubit found, hence "+host.name+" is NOT patched")
+	else:
+		print ("New CPU bit is found, hence "+host.name+" is patched")
+	
 
 atexit.register(Disconnect, si)
+
+
+
