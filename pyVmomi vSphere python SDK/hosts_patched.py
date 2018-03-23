@@ -55,18 +55,17 @@ def get_args():
     return args
 
 
-
 # Below method helps us to get MOR of the object (vim type) that we passed.
 def get_obj(content, vimtype, name):
-        obj = None
-        container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
-        for c in container.view:
-                if name:
-                        if c.name == name:
-                                obj = c
-                                break
-	container.Destroy()
-	return obj
+ obj = None
+ container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
+ for c in container.view:
+  if name and c.name == name:
+   obj = c
+   break
+ container.Destroy()
+ return obj
+
 
 
 args = get_args()
@@ -79,8 +78,8 @@ cluster_name=args.cluster
 #Cluster object
 cluster = get_obj(content,[vim.ClusterComputeResource],cluster_name)
 if(not cluster):
-	print ("Cluster not found, please enter correct EVC cluster name")
-	quit()
+ print ("Cluster not found, please enter correct EVC cluster name")
+ quit()
 
 print ("Cluster Name:"+cluster.name)
 
@@ -89,22 +88,22 @@ hosts = cluster.host
 
 #Iterate through each host to get MaxEVC mode supported on the host
 for host in hosts:
-	print ("----------------------------------")
-	print ("Host:"+host.name)
-        feature_capabilities = host.config.featureCapability
-	flag=False
-	for capability in feature_capabilities:
-
-                if(capability.key in ["cpuid.STIBP", "cpuid.IBPB","cpuid.IBRS"] and capability.value=="1"):
-			print ("Found::"+capability.key)
-			flag=True
-	if(not flag):
-                print ("No new  cpubit found, hence "+host.name+" is NOT patched")
-	else:
-		print ("New CPU bit is found, hence "+host.name+" is patched")
+ print ("----------------------------------")
+ print ("Host:"+host.name)
+ feature_capabilities = host.config.featureCapability
+ flag=False
+ for capability in feature_capabilities:
+  if(capability.key in ["cpuid.STIBP", "cpuid.IBPB","cpuid.IBRS"] and capability.value=="1"):
+   print ("Found::"+capability.key)
+   flag=True
+ if(not flag):
+  print ("No new  cpubit found, hence "+host.name+" is NOT patched")
+ else:
+  print ("New CPU bit is found, hence "+host.name+" is patched")
 	
 
 atexit.register(Disconnect, si)
+
 
 
 
