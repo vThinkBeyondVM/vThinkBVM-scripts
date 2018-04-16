@@ -6,34 +6,18 @@
 .NOTES Reference: http://vthinkbeyondvm.com/powercli-script-confirm-esxi-host-patched-vmware-hypervisor-patched-microcode-spectre-vulnerability/
 .NOTES Please add the vCenter server IP/credetails as per your environment
 .NOTES Relese notes: 
-  VC 6.5 U1e: https://docs.vmware.com/en/VMware-vSphere/6.5/rn/vsphere-vcenter-server-65u1e-release-notes.html
-  VC 6.0 U3d: https://docs.vmware.com/en/VMware-vSphere/6.0/rn/vsphere-vcenter-server-60u3d-release-notes.html
-  VC 5.5 U3g: https://docs.vmware.com/en/VMware-vSphere/5.5/rn/vsphere-vcenter-server-55u3g-release-notes.html
+  VC 6.5 U1g: https://docs.vmware.com/en/VMware-vSphere/6.5/rn/vsphere-vcenter-server-65u1g-release-notes.html
+  VC 6.0 U3e: https://docs.vmware.com/en/VMware-vSphere/6.0/rn/vsphere-vcenter-server-60u3e-release-notes.html
+  VC 5.5 U3h: https://docs.vmware.com/en/VMware-vSphere/5.5/rn/vsphere-vcenter-server-55u3h-release-notes.html
 #>
 
 #vCenter Connection, please modify as per your env.
 
-Connect-VIServer -Server 10.160.75.188 -Protocol https -User administrator@vsphere.local -Password Admin!23
+Connect-VIServer -Server 10.160.20.30 -Protocol https -User administrator@vsphere.local -Password VMware!32
 
 
 function Get-VMLog{
-<#
-.SYNOPSIS
-	Retrieve the virtual machine logs
-.DESCRIPTION
-	The function retrieves the logs from one or more
-	virtual machines and stores them in a local folder
-.NOTES
-	Author:  Luc Dekens
-.PARAMETER VM
-	The virtual machine(s) for which you want to retrieve
-	the logs.
-.PARAMETER Path
-	The folderpath where the virtual machines logs will be
-	stored. The function creates a folder with the name of the
-	virtual machine in the specified path.
-.EXAMPLE
-	PS> Get-VMLog -VM $vm -Path "C:\VMLogs"
+<# .SYNOPSIS Retrieve the virtual machine logs .DESCRIPTION The function retrieves the logs from one or more virtual machines and stores them in a local folder .NOTES Author: Luc Dekens .PARAMETER VM The virtual machine(s) for which you want to retrieve the logs. .PARAMETER Path The folderpath where the virtual machines logs will be stored. The function creates a folder with the name of the virtual machine in the specified path. .EXAMPLE PS> Get-VMLog -VM $vm -Path "C:\VMLogs"
 .EXAMPLE
 	PS> Get-VM | Get-VMLog -Path "C:\VMLogs"
 #>
@@ -63,39 +47,6 @@ function Get-VMLog{
 }
 $report = @()
 
-#As per release notes: vCenter builds which provide part of the hypervisor-assisted guest remediation of CVE-2017-5715 for guest operating systems 
-$vc65u1eBuild = "7515524" #VC 6.5 U1e build
-
-$vc60u3dBuild = "7464194" #VC 6.0 u3e build
-
-$vc55u3gBuild = "7460778" #VC 5.5 u3g build
-
-#getting service-Instance object to get vCenter build details
-$Si = Get-View ServiceInstance
-$vcVersion = $Si.Content.About.ApiVersion
-$vcBuild = $Si.Content.About.Build
-$vcBuildVersion=$Si.Content.About.FullName
-
-if (($vcBuild -eq $vc65u1eBuild) -or ($vcBuild -eq $vc60u3deBuild) -or ($vcBuild -eq $vc55u3gBuild )) {
-	Write-Host "vCenter build is matching with build specified on release notes"
-	Write-Host "vCenter build number::" $vcBuild
-	Write-Host "vCenter build & version ::" $vcBuildVersion
-	Write-Host "VC is patched to correct build"
-	$row = '' | select HostName, Status
- 	$row.HostName = $vcBuildVersion
- 	$row.Status="Patched"
- 	$report += $row
-}Else {
-    Write-Host "vCenter build is NOT matching with build specified on release notes"
-	Write-Host "vCenter build number::" $vcBuild
-	Write-Host "vCenter build & version ::" $vcBuildVersion
-	Write-Host "VC is NOT patched to correct build, please upgrade vCenter server."
-	$row = '' | select HostName, Status
- 	$row.HostName = $vcBuildVersion
- 	$row.Status="Un-Patched"
- 	$report += $row
-}
-
 #Location where vmware.log file gets downloaded
 $drive="C:\"
 $vmname="MyVM"
@@ -103,7 +54,7 @@ $vmname="MyVM"
 # Any of below lines must be found in vmware.log file to confirm microcode & VMware hypervisor patch
 $pat1='Capability Found: cpuid.IBRS'
 $pat2='Capability Found: cpuid.IBPB'
-$pat3='Capability Found: cpuid.STIBP'
+$pat3='Capabliity Found: cpuid.STIBP'
 
 $clusterName="EVCCluster" #Your cluster name, script assumes that cluster is available
 $cluster= Get-Cluster -Name $clusterName
@@ -112,12 +63,13 @@ $cluster= Get-Cluster -Name $clusterName
 $esxhosts = Get-Cluster $cluster | Get-VMHost -State Connected
 
 #Counter used to give unique name to dummyvm, you can use any number of your choice.
-$i=0
+$i=45
 
 #Iterating through each host for VM creation and scanning vmware.log file
 Foreach ($ESXHost in ($esxhosts)){
 	$vm=$vmname+$i
-	New-VM -Name $vm -VMHost $ESXHost -ResourcePool $cluster -DiskGB 1 -MemoryGB 1 -DrsAutomationLevel Disabled
+#Creating dummy vm with below configuration
+	New-VM -Name $vm -VMHost $ESXHost -ResourcePool $cluster -DiskGB 1 -MemoryGB 1 -DrsAutomationLevel Disabled -DiskStorageFormat Thin
 	Start-VM -VM $vm -RunAsync -Confirm:$false  #DRS may powerON this VM on some other host inside the cluster
 	$dest=$drive+$vm
 	Get-VMLog -VM $vm -Path "C:\"
@@ -154,7 +106,7 @@ Foreach ($ESXHost in ($esxhosts)){
  $i++
 }
 #Log the report into this CSV file, you can provide your name
-$report | Sort HostName | Export-Csv -Path "D:PatchStatus1.csv"
+$report | Sort HostName | Export-Csv -Path "D:PatchStatus.csv"
 
 #Disconnect the vCenter server
  Disconnect-VIServer -Confirm:$false
