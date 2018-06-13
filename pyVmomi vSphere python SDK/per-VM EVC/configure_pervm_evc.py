@@ -77,6 +77,12 @@ si= SmartConnect(host=args.host, user=args.user, pwd=args.password, sslContext=s
 content=si.content
 vm= get_obj(content, [vim.VirtualMachine],args.vmname)
 
+if(vm):
+        print ("VM available in vCenter server, thats good")
+else:
+        print ("VM NOT available in vCenter server, please enter correct name")
+        quit()
+
 supported_evc_mode=si.capability.supportedEVCMode
 for evc_mode in supported_evc_mode:
 	if(evc_mode.key == "intel-ivybridge"):
