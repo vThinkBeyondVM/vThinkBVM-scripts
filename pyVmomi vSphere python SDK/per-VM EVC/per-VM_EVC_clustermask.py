@@ -47,11 +47,7 @@ def get_args():
                         action='store',
                         default=None,
                         help='Name of the VM to be configured per VM EVC')	
-	parser.add_argument('-c', '--cluster',
-                        required=True,
-                        action='store',
-                        default=None,
-                        help='Name of the Cluster to get featureMask')					
+										
 
     args = parser.parse_args()
 
@@ -80,6 +76,7 @@ s.verify_mode=ssl.CERT_NONE
 si= SmartConnect(host=args.host, user=args.user, pwd=args.password, sslContext=s)
 content=si.content
 vm= get_obj(content, [vim.VirtualMachine],args.vmname)
+cluster_name="EVCCluster" #Pass your EVC cluster name
 
 if(vm and vm.capability.perVmEvcSupported):
         print ("VM available in vCenter server and it supports perVm EVC, thats good")
@@ -88,7 +85,7 @@ else:
         quit()
 
 #Cluster object
-cluster = get_obj(content,[vim.ClusterComputeResource], args.cluster)
+cluster = get_obj(content,[vim.ClusterComputeResource], cluster_name )
 
 if(cluster):
         print ("Cluster available in vCenter server, thats good")
@@ -102,7 +99,7 @@ evc_state=evc_cluster_manager.evcState
 current_evcmode_key= evc_state.currentEVCModeKey
 
 if(current_evcmode_key):
-        print ("Current EVC Mode::"+current_evcmode_key)
+        print ("Current cluster EVC Mode::"+current_evcmode_key)
 else:
         print ("EVC is NOT enabled on the cluster")
         quit()
