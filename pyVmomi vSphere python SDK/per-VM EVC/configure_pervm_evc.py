@@ -77,10 +77,10 @@ si= SmartConnect(host=args.host, user=args.user, pwd=args.password, sslContext=s
 content=si.content
 vm= get_obj(content, [vim.VirtualMachine],args.vmname)
 
-if(vm):
-        print ("VM available in vCenter server, thats good")
+if(vm and vm.capability.perVmEvcSupported):
+        print ("VM available in vCenter server and it supports perVm EVC, thats good")
 else:
-        print ("VM NOT available in vCenter server, please enter correct name")
+        print ("VM either NOT found or perVMEvc is NOT supported on the VM")
         quit()
 
 supported_evc_mode=si.capability.supportedEVCMode
