@@ -71,7 +71,7 @@ def get_obj(content, vimtype, name):
 
 
 args = get_args()
-s=ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+s=ssl.SSLContext(ssl.PROTOCOL_SSLv23) # # For VC 6.5/6.0 s=ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 s.verify_mode=ssl.CERT_NONE
 si= SmartConnect(host=args.host, user=args.user, pwd=args.password,sslContext=s)
 content=si.content
