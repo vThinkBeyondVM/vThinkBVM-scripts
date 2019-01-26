@@ -1,3 +1,10 @@
+# Author: Vikas Shitole
+# Website: www.vThinkBeyondVM.com
+# Product: vCenter server
+# Description: Python script to configure Hybrid Linked Mode (HLM) between Onprem and VMC VC
+# Reference:
+# How to setup vCenter REST API environment?: http://vthinkbeyondvm.com/getting-started-with-vcenter-server-rest-apis-using-python/
+
 import requests
 import json
 import ssl
@@ -43,13 +50,13 @@ def get_args():
 
     parser.add_argument('-d', '--domainname',
                         type=str,
-						default='vsphere.local',
+			default='vsphere.local',
                         action='store',
                         help='Onprem PSC domain name')
 						
     parser.add_argument('-pu', '--pscuser',
                         required=False,
-						default='Administrator@vsphere.local',
+			default='Administrator@vsphere.local',
                         action='store',
                         help='Onprem PSC username')
 
@@ -66,7 +73,7 @@ def get_args():
     parser.add_argument('-a', '--admingroup',
                         required=False,
                         action='store',
-                        default='joinadmins@bma.local',
+                        default='cloudadmin@yourdomain.com',
                         help='Cloud admins group')	
 						
     parser.add_argument('-pt', '--pscthumb',
