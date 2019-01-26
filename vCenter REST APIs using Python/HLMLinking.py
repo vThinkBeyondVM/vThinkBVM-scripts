@@ -1,6 +1,6 @@
 # Author: Vikas Shitole
 # Website: www.vThinkBeyondVM.com
-# Product: vCenter server
+# Product: VMware Cloud on AWS
 # Description: Python script to configure Hybrid Linked Mode (HLM) between Onprem and VMC VC
 # Reference:
 # How to setup vCenter REST API environment?: http://vthinkbeyondvm.com/getting-started-with-vcenter-server-rest-apis-using-python/
