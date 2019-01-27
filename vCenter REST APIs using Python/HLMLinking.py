@@ -2,7 +2,7 @@
 # Website: www.vThinkBeyondVM.com
 # Product: VMware Cloud on AWS
 # Description: Python script to configure Hybrid Linked Mode (HLM) between Onprem and VMC VC
-# Reference:
+# Reference: http://vthinkbeyondvm.com/how-to-configure-hybrid-linked-mode-hlm-using-vcenter-rest-api/
 # How to setup vCenter REST API environment?: http://vthinkbeyondvm.com/getting-started-with-vcenter-server-rest-apis-using-python/
 
 import requests
