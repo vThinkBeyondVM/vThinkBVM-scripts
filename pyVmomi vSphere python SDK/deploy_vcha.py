@@ -10,7 +10,10 @@ from pyVmomi import vim
 import ssl
 # Deploying vCenter HA in basic mode using self managed VC 
 
-s=ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+# For VC 6.5/6.0
+#s=ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+# For VC 6.7
+s = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
 s.verify_mode=ssl.CERT_NONE
 si= SmartConnect(host="10.161.34.35", user="Administrator@vsphere.local", pwd="VMware#12",sslContext=s)
 content=si.content
@@ -76,7 +79,7 @@ cred.password=active_vc_password
 service_locator.credential=cred
 service_locator.instanceUuid=si.content.about.instanceUuid
 service_locator.url=active_vc_url  #Source active VC
-service_locator.sslThumbprint=active_vc_thumprint
+service_locator.sslThumbprint=active_vc_thumbprint
 active_vc_spec.managementVc=service_locator
 deployment_spec.activeVcSpec=active_vc_spec
 
@@ -113,4 +116,4 @@ deployment_spec.witnessDeploymentSpec=witness_vc_spec
 task= vcha.deployVcha_Task(deployment_spec)
 
 if(task.info.state == "running"):
-        print "VCHA deployment is started, it will take few minutes, please monitor web client for its completion"
+        print("VCHA deployment is started, it will take few minutes, please monitor web client for its completion")
