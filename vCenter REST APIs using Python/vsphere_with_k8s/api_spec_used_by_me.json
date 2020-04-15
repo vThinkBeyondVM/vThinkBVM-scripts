@@ -1,0 +1,54 @@
+{
+   "image_storage":{
+      "storage_policy":"d1f4d33e-8040-4e5e-8cdf-7d5c1918eb96"
+   },
+   "ncp_cluster_network_spec":{
+      "nsx_edge_cluster":"77513d24-d767-44c6-b976-a8964a2bb588",
+      "pod_cidrs":[
+         {
+            "address":"10.244.0.0",
+            "prefix":21
+         }
+      ],
+      "egress_cidrs":[
+         {
+            "address":"10.x.x.x",
+            "prefix":27
+         }
+      ],
+      "cluster_distributed_switch":"50 37 ed a5 8d 48 8b 40-cf 0e fe 82 3d 03 ce 06",
+      "ingress_cidrs":[
+         {
+            "address":"10.x.x.x",
+            "prefix":27
+         }
+      ]
+   },
+   "master_management_network":{
+      "mode":"STATICRANGE",
+      "address_range":{
+         "subnet_mask":"255.255.x.x",
+         "starting_address":"10.x.x.x",
+         "gateway":"10.x.x.x",
+         "address_count":5
+      },
+      "network":"network-15"
+   },
+   "master_NTP_servers":[
+      "10.x.x.x"
+   ],
+   "ephemeral_storage_policy":"d1f4d33e-8040-4e5e-8cdf-7d5c1918eb96",
+   "service_cidr":{
+      "address":"10.96.0.0",
+      "prefix":24
+   },
+    "size_hint":"TINY"	,
+   "master_DNS":[
+      "10.x.x.x"
+   ],
+    "worker_DNS":[
+      "10.x.x.x"
+   ],
+   "network_provider":"NSXT_CONTAINER_PLUGIN",
+   "master_storage_policy":"d1f4d33e-8040-4e5e-8cdf-7d5c1918eb96"
+}
