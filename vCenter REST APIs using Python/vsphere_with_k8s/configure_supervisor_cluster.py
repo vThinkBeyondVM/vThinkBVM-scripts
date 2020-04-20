@@ -1,6 +1,7 @@
 # Author: Vikas Shitole
-# Product: vCenter server/ WCP cluster configuration
-# Description: Python script to configure/enable WCP on the given cluster
+# Product: vCenter server/ vSphere Supervisor cluster configuration
+# Description: Python script to configure/enable vSphere Supervisor cluster on the given cluster
+# Reference: https://vthinkbeyondvm.com/script-to-configure-vsphere-supervisor-cluster-using-rest-apis/
 # How to setup vCenter REST API environment?: http://vthinkbeyondvm.com/getting-started-with-vcenter-server-rest-apis-using-python/
 
 #TODO: Some additional formatting and null check pending but that is not a blocker to run this script
@@ -236,8 +237,8 @@ payload = {
 json_payload = json.loads(json.dumps(payload))
 json_response = s.post('https://'+args.host+'/api/vcenter/namespace-management/clusters/'+cluster_id+'?action=enable',headers=headers,json=json_payload)
 if json_response.ok:
-	print ("WCP  API invoked, checkout your H5C")
+	print ("Enable API invoked, checkout your H5C")
 else:
-	print ("WCP  API NOT invoked, please check your inputs once again")
+	print ("Enable  API NOT invoked, please check your inputs once again")
 print (json_response.text)
 session_delete=s.delete('https://'+args.host+'/rest/com/vmware/cis/session',auth=(args.user,args.password))
