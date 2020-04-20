@@ -1,6 +1,6 @@
 # vThinkBVM-scripts
 
-This repository contains a collection of sample scripts primarily using Java SDK and PowerCLI/PowerShell across VMware solutions.
+This repository contains a collection of sample scripts primarily around vSphere, vSphere with Kubernetes, VMC, NSX-T using Java,Python SDK and PowerCLI/PowerShell
 
 # Licensing
 
