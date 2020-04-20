@@ -1,6 +1,7 @@
 # Author: Vikas Shitole
-# Product: vCenter server/ WCP cluster configuration
+# Product: vCenter server/ vSphere Supervisor namespace configuration
 # Description: Python script to create namespace on the top of vSphere Supervisor cluster
+# Reference: https://vthinkbeyondvm.com/script-to-configure-vsphere-supervisor-cluster-using-rest-apis/
 # How to setup vCenter REST API environment?: http://vthinkbeyondvm.com/getting-started-with-vcenter-server-rest-apis-using-python/
 
 import requests
@@ -160,8 +161,8 @@ payload = {
 json_payload = json.loads(json.dumps(payload))
 json_response = s.post('https://'+args.host+'/api/vcenter/namespaces/instances',headers=headers,json=json_payload)
 if json_response.ok:
-	print ("WCP  Namespace creation invoked, checkout your H5C")
+	print ("Supervisor Namespace creation invoked, checkout your H5C")
 else:
-	print ("WCP  Namespace creation NOT invoked, please check your inputs once again")
+	print ("Supervisor Namespace creation NOT invoked, please check your inputs once again")
 print (json_response.text)
 session_delete=s.delete('https://'+args.host+'/rest/com/vmware/cis/session',auth=(args.user,args.password))
