@@ -1,11 +1,24 @@
-      <#
-        .SYNOPSIS PowerCLI script: How to hide the speculative-execution control mechanism for virtual machines running on Intel Haswell and Broadwell processors ?" 
-        .NOTES  Author:  Vikas Shitole
-        .NOTES  Site:    www.vThinkBeyondVM.com
-        .NOTES Reference:  KB https://kb.vmware.com/s/article/52345 
-        .NOTES Detailed blog: http://vthinkbeyondvm.com/powercli-script-hide-speculative-execution-control-mechanism-vms-running-intel-haswell-broadwell-processors/
-        .NOTES Please add the vCenter server IP/credetails as per your environment
-        #>
+<#
+.SYNOPSIS
+    PowerCLI script to hide the speculative-execution control mechanism (new CPU IDs) for virtual machines running on Intel Haswell and Broadwell processors.
+.DESCRIPTION
+    This script connects to a specified vCenter, iterates through all connected ESXi hosts in a given datacenter, and checks if the hosts expose new speculative-execution CPU IDs (IBPB, IBRS, STIBP). If so, it uses SSH to append a workaround line to /etc/vmware/config on the host to hide these CPU IDs, as per VMware KB 52345. The script also handles SSH service state and takes a backup of the config file before making changes.
+.PARAMETER DCName
+    The name of the vCenter datacenter to target. Modify the $DCName variable as needed.
+.PARAMETER vCenter Connection
+    Update the Connect-VIServer command with your vCenter server address, username, and password.
+.PARAMETER Credentials
+    The script prompts for ESXi host root credentials. All hosts must share the same credentials, or modify the script for per-host credentials.
+.EXAMPLE
+    # Update variables as needed, then run:
+    ./hideNewCpuids.ps1
+.NOTES
+    Author:  Vikas Shitole
+    Site:    www.vThinkBeyondVM.com
+    Reference:  KB https://kb.vmware.com/s/article/52345
+    Detailed blog: http://vthinkbeyondvm.com/powercli-script-hide-speculative-execution-control-mechanism-vms-running-intel-haswell-broadwell-processors/
+    Please update vCenter server IP/credentials and datacenter name as per your environment.
+#>
 
         #vCenter Connection, please modify as per your env.
         
