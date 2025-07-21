@@ -1,10 +1,33 @@
 ﻿<#
-.SYNOPSIS Getting DRS VM-VM affinity rules associated with each VMs in the cluster.
-.NOTES  Author:  Vikas Shitole
-.NOTES  Site:    www.vThinkBeyondVM.com
-.NOTES  Reference: http://vthinkbeyondvm.com/category/powercli/ 
-.NOTES Please add the vCenter server IP/credetails as per your environment
+.SYNOPSIS
+    Retrieves DRS VM-VM affinity and anti-affinity rules associated with each VM in a specified vSphere cluster.
 
+.DESCRIPTION
+    This script connects to a vCenter Server and generates a report of all DRS VM-VM rules (affinity/anti-affinity) associated with each virtual machine in a given cluster. The output is exported as a CSV file for further analysis.
+
+.PARAMETER clusterName
+    The name of the vSphere cluster to analyze. Update the $clusterName variable in the script as needed.
+
+.PARAMETER vCenter Credentials
+    Update the Connect-VIServer command with your vCenter Server address, username, and password.
+
+.OUTPUTS
+    CSV file containing VM names and their associated DRS rules. The file is saved to the path specified in the Export-Csv command (default: D:\VMsRules.csv).
+
+.EXAMPLE
+    # Update the cluster name and vCenter credentials, then run the script:
+    PS> .\FindRulesForVMInCluster.ps1
+
+.REQUIREMENTS
+    - VMware PowerCLI module installed
+    - Sufficient privileges to connect to vCenter and read cluster/VM/rule information
+
+.NOTES
+    Author:  Vikas Shitole
+    Site:    www.vThinkBeyondVM.com
+    Reference: http://vthinkbeyondvm.com/category/powercli/
+    Please update the vCenter server IP/credentials and cluster name as per your environment.
+    The script assumes the output directory exists and is writable.
 #>
 
 Connect-VIServer -Server 10.192.x.y -User Administrator@vsphere.local -Password xyz!23
