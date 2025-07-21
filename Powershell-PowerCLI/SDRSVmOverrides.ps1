@@ -1,10 +1,33 @@
 	<#
-	.NOTES  Product/Feature: vCenter Server/SDRS
-	.NOTES  Author:  Vikas Shitole
-	.NOTES  Reference: https://pubs.vmware.com/vsphere-65/index.jsp#com.vmware.wssdk.apiref.doc/vim.StorageResourceManager.html#configureStorageDrsForPod
-	.NOTES  https://www.vmware.com/support/developer/PowerCLI/PowerCLI65R1/html/Set-PowerCLIConfiguration.html
-	.NOTES  Description: Re-enable SDRS on VMs where SDRS was disabled when particular datastore was selected for VMDK/VM placement. Tested on vSphere 6.0.
-	.NOTES Please add the vCenter server IP/credetails as per your environment
+	.SYNOPSIS
+    Re-enables SDRS on VMs that have SDRS disabled due to manual datastore selection.
+
+.DESCRIPTION
+    This script connects to a vCenter Server and identifies VMs in a specified Storage DRS (SDRS) datastore cluster (StoragePod) that have overridden the cluster-level SDRS configuration (i.e., SDRS is disabled for them). It then re-enables SDRS for those VMs and exports a report of affected VMs to a CSV file.
+    
+    Tested on vSphere 6.0. Please update the vCenter server IP, credentials, and CSV export path as per your environment.
+
+.AUTHOR
+    Vikas Shitole
+
+.REFERENCE
+    https://pubs.vmware.com/vsphere-65/index.jsp#com.vmware.wssdk.apiref.doc/vim.StorageResourceManager.html#configureStorageDrsForPod
+    https://www.vmware.com/support/developer/PowerCLI/PowerCLI65R1/html/Set-PowerCLIConfiguration.html
+
+.PARAMETER None
+    Update the script to use your vCenter Server IP, credentials, and desired CSV export path.
+
+.OUTPUTS
+    CSV file containing the list of VMs for which SDRS was re-enabled.
+
+.EXAMPLE
+    # Run the script in PowerShell with appropriate permissions and PowerCLI installed:
+    .\SDRSVmOverrides.ps1
+
+.NOTES
+    Product/Feature: vCenter Server/SDRS
+    Description: Re-enable SDRS on VMs where SDRS was disabled when a particular datastore was selected for VMDK/VM placement.
+    Please add the vCenter server IP/credentials as per your environment.
 	#>
 
 	Write-host "Connecting to vCenter server.."
