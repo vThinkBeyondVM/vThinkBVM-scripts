@@ -5,47 +5,75 @@
 .DESCRIPTION 
     This script connects to a specified vCenter Server and gathers resource usage and capacity statistics for each cluster. The collected data includes CPU capacity and usage (in MHz), memory capacity and usage (in MB), and storage capacity and usage (in MB). The results are exported to a CSV file for further analysis or reporting.
 
-.PARAMETER None
-    The script does not accept parameters. Please update the vCenter connection details and output CSV path as needed for your environment.
+.PARAMETER vCenter
+    The IP address or FQDN of the vCenter Server to connect to.
+
+.PARAMETER OutputCsv
+    The full path to the CSV file where the report will be saved.
 
 .EXAMPLE
-    .\ClusterResources.ps1
+    .\ClusterResources.ps1 -vCenter 10.92.166.82 -OutputCsv "C:\\Temp\\ClusterStats.csv"
     Runs the script, connects to the vCenter, collects cluster resource data, and exports it to the specified CSV file.
 
 .NOTES
     Author:  Vikas Shitole
     Site:    www.vThinkBeyondVM.com
     Reference: http://vthinkbeyondvm.com/category/powercli/
-    Please add the vCenter server IP/credentials as per your environment.
+    Please provide vCenter server IP/credentials as per your environment.
     Update the Export-Csv path as needed.
 
 .OUTPUTS
     CSV file containing cluster resource usage and capacity statistics.
 #>
 
-Connect-VIServer -Server 10.92.166.82 -User Administrator@vsphere.local -Password xyz!23
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$vCenter,
+
+    [Parameter(Mandatory = $true)]
+    [string]$OutputCsv
+)
+
+try {
+    $cred = Get-Credential -Message "Enter credentials for vCenter $vCenter"
+    Connect-VIServer -Server $vCenter -Credential $cred -ErrorAction Stop
+} catch {
+    Write-Error "Failed to connect to vCenter: $_"
+    exit 1
+}
 
 $report = @()
+Write-Host "Report generation is in progress..."
 
-Write-host "Report Generation is in Progress..."
-
-foreach ($cluster in Get-Cluster   ){
-
-  $row = '' | select ClusterName,CpuCapacity , CpuUsed, MemCapacity,MemUsed ,StorageCapacity,StorageUsed
-  
-$cluster = Get-Cluster -Name $clusterName
-$cluster_view = Get-View ($cluster)
-$resourceSummary=$cluster_view.GetResourceUsage()
-$row.ClusterName =$cluster_view.Name
-$row.CpuCapacity =$resourceSummary.CpuCapacityMHz
-$row.CpuUsed =$resourceSummary.CpuUsedMHz
-$row.MemCapacity =$resourceSummary.MemCapacityMB
-$row.MemUsed =$resourceSummary.MemUsedMB
-$row.StorageCapacity =$resourceSummary.StorageCapacityMB
-$row.StorageUsed =$resourceSummary.StorageUsedMB
-
-$report += $row
+foreach ($cluster in Get-Cluster) {
+    try {
+        $row = [PSCustomObject]@{
+            ClusterName      = $null
+            CpuCapacityMHz   = $null
+            CpuUsedMHz       = $null
+            MemCapacityMB    = $null
+            MemUsedMB        = $null
+            StorageCapacityMB= $null
+            StorageUsedMB    = $null
+        }
+        $clusterView = Get-View -Id $cluster.Id
+        $resourceSummary = $clusterView.GetResourceUsage()
+        $row.ClusterName       = $clusterView.Name
+        $row.CpuCapacityMHz    = $resourceSummary.CpuCapacityMHz
+        $row.CpuUsedMHz        = $resourceSummary.CpuUsedMHz
+        $row.MemCapacityMB     = $resourceSummary.MemCapacityMB
+        $row.MemUsedMB         = $resourceSummary.MemUsedMB
+        $row.StorageCapacityMB = $resourceSummary.StorageCapacityMB
+        $row.StorageUsedMB     = $resourceSummary.StorageUsedMB
+        $report += $row
+    } catch {
+        Write-Warning "Failed to process cluster $($cluster.Name): $_"
+    }
 }
-$report | Sort  ClusterName | Export-Csv -Path "D:Clusterstats.csv" #Please change the CSV file location
 
-Write-host "Report Generation is completed, please chekc the CSV file"
+try {
+    $report | Sort-Object ClusterName | Export-Csv -Path $OutputCsv -NoTypeInformation -Force
+    Write-Host "Report generation is completed. Please check the CSV file at: $OutputCsv"
+} catch {
+    Write-Error "Failed to export report to CSV: $_"
+}
