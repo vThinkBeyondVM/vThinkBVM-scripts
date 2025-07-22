@@ -1,3 +1,4 @@
+# NOTE: These samples were developed on older vSphere versions. While they may work on the latest versions, they are not tested release over release. Use at your own risk.
 # Author: Vikas Shitole
 # Product: vCenter server
 # Description: Script to confirm whether both hypervisor and microcode patches are applied or not : vCenter/ESXi patches for Spectre vulnerability.

@@ -1,3 +1,4 @@
+# NOTE: These samples were developed on older vSphere versions. While they may work on the latest versions, they are not tested release over release. Use at your own risk.
 <#
 .SYNOPSIS
     PowerCLI script to hide the speculative-execution control mechanism (new CPU IDs) for virtual machines running on Intel Haswell and Broadwell processors.

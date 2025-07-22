@@ -1,4 +1,5 @@
-﻿<#
+﻿# NOTE: These samples were developed on older vSphere versions. While they may work on the latest versions, they are not tested release over release. Use at your own risk.
+<#
 .SYNOPSIS
     Retrieves DRS VM-VM affinity and anti-affinity rules associated with each VM in a specified vSphere cluster.
 

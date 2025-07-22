@@ -1,3 +1,4 @@
+// NOTE: These samples were developed on older vSphere versions. While they may work on the latest versions, they are not tested release over release. Use at your own risk.
 /**
  * NOTE: This sample was written using the legacy open source VIJava project, which is no longer maintained by its original maintainer.
  * The legacy VIJava project was last supported up to vSphere 6.0. These samples may still work on newer vSphere versions, but this is not guaranteed and they have not been tested on the latest versions.

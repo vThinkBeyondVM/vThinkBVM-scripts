@@ -1,3 +1,4 @@
+# NOTE: These samples were developed on older vSphere versions. While they may work on the latest versions, they are not tested release over release. Use at your own risk.
 # Author: Vikas Shitole
 # Product: vCenter server/EVC (Enhanced Compatibility Mode): Applicable to vSphere 6.0 and 6.5 (Not applicable for vSphere 5.5 EVC clusters)
 # Description: Script to check whether EVC cluster and its hosts are patched or not : vCenter/ESXi patches for Spectre vulnerability.

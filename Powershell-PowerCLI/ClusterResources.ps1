@@ -1,3 +1,4 @@
+# NOTE: These samples were developed on older vSphere versions. While they may work on the latest versions, they are not tested release over release. Use at your own risk.
 <#
 .SYNOPSIS 
     Retrieves usage and capacity data for CPU, Memory, and Storage for all clusters in a vCenter environment and exports the results to a CSV file.

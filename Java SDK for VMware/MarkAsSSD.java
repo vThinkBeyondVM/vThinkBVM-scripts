@@ -1,3 +1,4 @@
+// NOTE: These samples were developed on older vSphere versions. While they may work on the latest versions, they are not tested release over release. Use at your own risk.
 /**
  * NOTE: This sample was written using the legacy open source VIJava project, which is no longer maintained by its original maintainer.
  * For all new development, please use the official VMware vSphere Management SDKs (also known as vSphere Web Services SDK).
