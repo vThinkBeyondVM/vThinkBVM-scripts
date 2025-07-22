@@ -1,17 +1,44 @@
 
 <#
-.SYNOPSIS: This script connects to the vCenter Server and prepares a report on All VMs with at-least one disk enabled with "Multi-Writer" sharing.
-.Report will be generated as CSV file with "VM Name". This can be modified to add some more columns as needed
-.VC IP/UserName/Password are hardcoded below, please change them as per your environment
-.By default this script scans all the VMs/VMDK in the vCenter Server. It can be easily twicked to scan VM per cluster or host or datacenter
+.SYNOPSIS
+    Connects to a vCenter Server and generates a CSV report of all VMs with at least one disk enabled for "Multi-Writer" sharing.
+    The report includes the VM Name by default, but can be customized to include additional columns as needed.
 
-.NOTES  Author:  Vikas Shitole
-.NOTES  Site:    www.vThinkBeyondVM.com
-.NOTES  Reference: http://vthinkbeyondvm.com/category/powercli/
-.NOTES Please add the vCenter server IP/credetails as per your environment
+.DESCRIPTION
+    This script scans all VMs and VMDKs in the specified vCenter Server for disks with "Multi-Writer" sharing enabled.
+    By default, it scans the entire vCenter, but can be easily tweaked to scan by cluster, host, or datacenter (see examples below).
+    The output is a CSV file containing the names of matching VMs.
 
-Alternate solution by scanning VMX file is here: https://github.com/vThinkBeyondVM/vThinkBVM-scripts/blob/master/Powershell-PowerCLI/VMMultiWriterReport2.ps1
+.PARAMETER vCenter
+    The vCenter Server IP/hostname, username, and password are hardcoded in the script. Please update these values to match your environment before running.
 
+.OUTPUTS
+    CSV file containing the VM names with at least one disk set to "Multi-Writer" sharing.
+    The output file path can be changed as needed.
+
+.EXAMPLE
+    # Run the script after updating vCenter credentials and output path:
+    .\VMMultiWriterReport.ps1
+
+.NOTES
+    Author:  Vikas Shitole
+    Site:    www.vThinkBeyondVM.com
+    Reference: http://vthinkbeyondvm.com/category/powercli/
+    Please update the vCenter server IP/credentials as per your environment.
+    Alternate solution by scanning VMX files: https://github.com/vThinkBeyondVM/vThinkBVM-scripts/blob/master/Powershell-PowerCLI/VMMultiWriterReport2.ps1
+
+    To scope the report to a specific Datacenter, Datastore, Host, or Cluster, use the following examples:
+        $myDatacenter = Get-Datacenter -Name "MyDatacenter"
+        Get-VM -Location $myDatacenter
+
+        $myDatastore = Get-Datastore -Name "MyDatastore"
+        Get-VM -Datastore $myDatastore
+
+        $myHost = Get-VMHost -Name "HostName"
+        Get-VM -Location $myHost
+
+        $myCluster = Get-Cluster -Name "ClusterName"
+        Get-VM -Location $myCluster
 #>
 
 Write-host "Connecting to vCenter server.."
