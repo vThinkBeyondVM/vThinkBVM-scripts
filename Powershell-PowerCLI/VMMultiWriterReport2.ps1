@@ -1,18 +1,38 @@
 
 <#
-.SYNOPSIS: This script first downloads all the VMX files (per host/cluster/datacenter/VC)at specified file location
-.Once downloaded, it will scan each VMX file one by one to get "multi-writer" entry inside VMX
-.Finally it will list all matching VMX file names into specified file location. 
-.As it downloads all the VMX files, it is going to take more time, that should be fine. 
-.It is all right to download the VMX file when VM is up and running.
-.If name of the VM is changed, VMX file can be different from VM display name (visible from inventory). 
-.There are 2 file locations you need to specify. 1. Directory where VMX file will be downloaded 2. Output file.
+.SYNOPSIS
+    Downloads all VMX files for VMs in a vCenter (per host/cluster/datacenter/VC) to a specified directory, scans each for the "multi-writer" entry, and outputs a list of matching VMX file names to a specified file.
 
-.NOTES  Author:  Vikas Shitole
-.NOTES  Site:    www.vThinkBeyondVM.com
-.NOTES  Reference: http://vthinkbeyondvm.com/category/powercli/ and https://communities.vmware.com/message/2269363#2269363
-.NOTES Please add the vCenter server IP/credetails as per your environment
-.NOTES Alternatively you can use this script where API properties are used. https://github.com/vThinkBeyondVM/vThinkBVM-scripts/blob/master/Powershell-PowerCLI/VMMultiWriterReport.ps1
+.DESCRIPTION
+    This script connects to a vCenter server, downloads all VMX files for the VMs found, and searches each file for the presence of the "multi-writer" setting. It then outputs the names of VMX files containing this setting to an output file. The script is intended for environments where you need to audit VMs using multi-writer disks (e.g., for shared disk clustering scenarios).
+
+.PARAMETER tgtFolder
+    The directory where VMX files will be downloaded. Update this variable as per your environment.
+
+.PARAMETER tgtString
+    The string to search for in the VMX files. By default, it searches for '"multi-writer"'.
+
+.PARAMETER OutputFile
+    The file where the list of VMX files containing the target string will be written. Update this path as needed.
+
+.PARAMETER vCenterServer
+    The vCenter server to connect to. Update the Connect-VIServer command with your vCenter address and credentials.
+
+.OUTPUTS
+    A text file containing the names of VMX files that have the "multi-writer" entry.
+
+.EXAMPLE
+    # Update variables as needed, then run:
+    .\VMMultiWriterReport2.ps1
+
+.NOTES
+    Author:  Vikas Shitole
+    Site:    www.vThinkBeyondVM.com
+    Reference: http://vthinkbeyondvm.com/category/powercli/ and https://communities.vmware.com/message/2269363#2269363
+    Alternative: For a version using API properties, see https://github.com/vThinkBeyondVM/vThinkBVM-scripts/blob/master/Powershell-PowerCLI/VMMultiWriterReport.ps1
+    Permissions: Requires appropriate permissions to connect to vCenter and access datastores.
+    Note: Downloading all VMX files may take significant time depending on environment size. It is safe to download VMX files while VMs are running. If a VM's display name has changed, the VMX file name may differ from the inventory name.
+    Customization: You can filter VMs by datacenter, datastore, host, or cluster by modifying the Get-VM command as shown in the commented examples at the end of the script.
 #>
 
 
