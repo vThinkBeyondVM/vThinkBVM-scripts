@@ -1,3 +1,8 @@
+/**
+ * NOTE: This sample was written using the legacy open source VIJava project, which is no longer maintained by its original maintainer.
+ * For all new development, please use the official VMware vSphere Management SDKs (also known as vSphere Web Services SDK).
+ * Download and documentation for the latest vSphere SDKs: https://developer.broadcom.com/sdks?tab=Compute%2520Virtualization
+ */
 //:: # Author: Vikas Shitole
 //:: # Website: www.vThinkBeyondVM.com
 //:: # Product/Feature: vCenter Server/ESXi/Storage/vFlash/VFFS

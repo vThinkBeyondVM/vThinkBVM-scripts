@@ -1,3 +1,9 @@
+/**
+ * NOTE: This sample was written using the legacy open source VIJava project, which is no longer maintained by its original maintainer.
+ * The legacy VIJava project was last supported up to vSphere 6.0. These samples may still work on newer vSphere versions, but this is not guaranteed and they have not been tested on the latest versions.
+ * For all new development, please use the official VMware vSphere Management SDKs (also known as vSphere Web Services SDK).
+ * Download and documentation for the latest vSphere SDKs: https://developer.broadcom.com/sdks?tab=Compute%2520Virtualization
+ */
 //:: # Author: Vikas Shitole
 //:: # Website: www.vThinkBeyondVM.com
 //:: # Product/Feature: vCenter Server/NFS
